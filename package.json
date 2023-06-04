@@ -1,6 +1,6 @@
 {
   "name": "liability",
-  "version": "0.0.3-test-high-vulnerability",
+  "version": "0.1.0-fixed",
   "description": "This Node.js package triggers vulnerabilities and deprecations. So you better update - constantly.",
   "main": "index.js",
   "scripts": {
@@ -23,8 +23,5 @@
   "bugs": {
     "url": "https://github.com/SamuelDietz/liability/issues"
   },
-  "homepage": "https://github.com/SamuelDietz/liability#readme",
-  "dependencies": {
-    "lodash": "4.17.20"
-  }
+  "homepage": "https://github.com/SamuelDietz/liability#readme"
 }

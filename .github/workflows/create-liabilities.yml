@@ -27,9 +27,11 @@ jobs:
 
           # Get the current version from package.json
           CURRENT_VERSION=$(node -p "require('./package.json').version")
+          echo "Current version: $CURRENT_VERSION"
 
           # Get the last run timestamp from an environment variable
           LAST_RUN_TIMESTAMP=${{ env.LAST_RUN_TIMESTAMP }}
+          echo "Last run timestamp: $LAST_RUN_TIMESTAMP"
 
           # Get the current timestamp
           CURRENT_TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
