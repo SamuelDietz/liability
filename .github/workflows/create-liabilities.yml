@@ -22,8 +22,10 @@ jobs:
       - name: Update package version and dependencies
         id: update_package
         run: |
-          # Uninstall existing dependencies
-          npm ls --depth 0 --json | jq -r '.dependencies | keys[]' | xargs npm uninstall
+          # Uninstall existing dependencies if any
+          if npm ls --depth 0 --json | jq -e '.dependencies | length > 0' >/dev/null 2>&1; then
+            npm ls --depth 0 --json | jq -r '.dependencies | keys[]' | xargs npm uninstall
+          fi
 
           # Get the current version from package.json
           CURRENT_VERSION=$(node -p "require('./package.json').version")
