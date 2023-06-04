@@ -9,10 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '16'
 
@@ -28,8 +28,8 @@ jobs:
           # Get the current version from package.json
           CURRENT_VERSION=$(node -p "require('./package.json').version")
 
-          # Get the last run timestamp from a file
-          LAST_RUN_TIMESTAMP=$(cat last_run.txt || echo "")
+          # Get the last run timestamp from an environment variable
+          LAST_RUN_TIMESTAMP=${{ env.LAST_RUN_TIMESTAMP }}
 
           # Get the current timestamp
           CURRENT_TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
@@ -55,7 +55,7 @@ jobs:
           # Determine the current vulnerability level
           VULNERABILITY_LEVEL=$(echo $CURRENT_VERSION | grep -oE "[^-]+$")
 
-          # Install the appropriate dependencies based on vulnerability level
+          # Install the appropriate dependencies based on the vulnerability level
           if [[ $VULNERABILITY_LEVEL == "low-vulnerability" ]]; then
             npm install swagger-ui-dist@4.1.2 --save-exact
             NEW_VERSION="${NEW_VERSION}-moderate-vulnerability"
@@ -81,11 +81,11 @@ jobs:
 
           fi
 
-          # Save the current timestamp to a file
-          echo $CURRENT_TIMESTAMP > last_run.txt
+          # Set the current timestamp to the environment variable
+          echo "LAST_RUN_TIMESTAMP=$CURRENT_TIMESTAMP" >> $GITHUB_ENV
 
-          # Update the version in package.json with the new vulnerability level
-          npm version $NEW_VERSION --allow-same-version --no-git-tag-version
+          # Set the new version to the environment variable
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
 
           # Print the updated version
           echo $NEW_VERSION
@@ -96,10 +96,10 @@ jobs:
       - name: Publish new version
         run: |
           # Get the updated version from the previous step
-          NEW_VERSION=$(cat new_version.txt)
+          NEW_VERSION=${{ env.NEW_VERSION }}
 
           # Authenticate with npm
-          echo "//registry.npmjs.org/:_authToken=\${{ secrets.NPM_TOKEN }}" > .npmrc
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
 
           # Publish the new version
           npm publish
