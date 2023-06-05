@@ -55,24 +55,30 @@ jobs:
           if [[ $VULNERABILITY_LEVEL == "fixed" ]]; then
             npm install timespan@2.3.0 --save-exact
             NEW_VERSION="${NEW_VERSION}-low-vulnerability"
+            VULNERABILITY_LEVEL="low-vulnerability"  # Update the vulnerability level
 
           elif [[ $VULNERABILITY_LEVEL == "low-vulnerability" ]]; then
             npm install swagger-ui-dist@4.1.2 --save-exact
             NEW_VERSION="${NEW_VERSION}-moderate-vulnerability"
+            VULNERABILITY_LEVEL="moderate-vulnerability"  # Update the vulnerability level
 
           elif [[ $VULNERABILITY_LEVEL == "moderate-vulnerability" ]]; then
             npm install lodash@4.17.20 --save-exact
             NEW_VERSION="${NEW_VERSION}-high-vulnerability"
+            VULNERABILITY_LEVEL="high-vulnerability"  # Update the vulnerability level
 
           elif [[ $VULNERABILITY_LEVEL == "high-vulnerability" ]]; then
             npm install lodash@4.17.4 --save-exact
             NEW_VERSION="${NEW_VERSION}-critical-vulnerability"
+            VULNERABILITY_LEVEL="critical-vulnerability"  # Update the vulnerability level
 
           elif [[ $VULNERABILITY_LEVEL == "critical-vulnerability" ]]; then
             NEW_VERSION="${NEW_VERSION}-deprecated"
+            VULNERABILITY_LEVEL="deprecated"  # Update the vulnerability level
 
           else
             NEW_VERSION="${NEW_VERSION}-fixed"
+            VULNERABILITY_LEVEL="fixed"  # Update the vulnerability level
           fi
 
           # Update the version in package.json
