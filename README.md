@@ -1,7 +1,6 @@
 ![Don't install this package](liability.png)
 
 [![Create liabilities](https://github.com/SamuelDietz/liability/actions/workflows/create-liabilities.yml/badge.svg)](https://github.com/SamuelDietz/liability/actions/workflows/create-liabilities.yml)
-![npm](https://img.shields.io/npm/v/liability)
 ![npm](https://img.shields.io/npm/dt/liability)
 ![GitHub](https://img.shields.io/github/license/SamuelDietz/liability)
 
@@ -9,21 +8,28 @@
 
 It constantly triggers vulnerabilities of different severity levels by rotating installs of vulnerable packages. New versions are released every 5+ minutes.
 
-If you do the mistake of executing
+if you make the mistake of executing
 
 ```bash
 npm install liability
 ```
 
-you can use this package to test commands like `npm audit` or to test your CI/CD pipeline. It's also a good way to test your [Dependabot](https://github.com/dependabot) configuration.
+you can use this package to test your monitoring tools such as your [Dependabot](https://github.com/dependabot) configuration.
 
-_Please don't use this package in production._
+Due to the frequent updates, you probably want to screen for outdated and deprecated packages as well. Some useful commands to handle this liability are `npm audit`, `npm outdated` and `npm update`. For more help, check out the [npm cli commands](https://docs.npmjs.com/cli/v9/commands).
 
 ## Manual testing
 
-If you don't like constant insecurity updates you might want to explicitly install a specific version of this package to test for the respective vulnerability level or for deprecation warnings. Consider installing one of the following versions:
+If you don't like constant insecurity updates you might want to explicitly install a specific version of this package to test for the respective "feature":
 
-_Coming soon._
+| feature                           | install command                                   |
+| --------------------------------- | ------------------------------------------------- |
+| low severity vulnerability        | `npm i liability@1.2.9-low-vulnerability`         |
+| moderate severity vulnerability   | `npm i liability@1.3.0-moderate-vulnerability`    |
+| high severity vulnerability       | `npm i liability@1.3.1-high-vulnerability`        |
+| critical severity vulnerability   | `npm i liability@1.3.2-critical-vulnerability`    |
+| deprecated                        | `npm i liability@1.3.3-deprecated`                |
+| fixed - but not for long          | `npm i liability@1.3.4-fixed`                     |
 
 ## Package versions used to trigger vulnerabilities
 
@@ -35,3 +41,7 @@ _Coming soon._
 | low      | timespan@2.3.0        |
 
 Taken from the [GitHub Advisory Database](https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm).
+
+---
+
+_Please don't use this package in production._

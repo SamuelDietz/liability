@@ -114,7 +114,7 @@ jobs:
       - name: Deprecate the version if necessary
         run: |
           if [[ ${{ steps.update_package.outputs.new_version }} == *"-deprecated" ]]; then
-            npm deprecate . "This version is deprecated"
+            npm deprecate liability@${{ steps.update_package.outputs.new_version }} "This version is deprecated"
           fi
 
         env:
