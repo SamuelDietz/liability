@@ -2,7 +2,7 @@ name: Create liabilities
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: "*/5 * * * *"
 
 jobs:
   update_and_publish:
@@ -14,13 +14,13 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: "16"
 
       - name: Install dependencies
         run: npm install
 
-      - name: Update package version and dependencies
-        id: update_package
+      - name: Update and publish
+        id: update_and_publish
         run: |
           # Uninstall existing dependencies if any
           if npm ls --depth 0 --json | jq -e '.dependencies | length > 0' >/dev/null 2>&1; then
@@ -31,36 +31,32 @@ jobs:
           CURRENT_VERSION=$(node -p "require('./package.json').version")
           echo "Current version: $CURRENT_VERSION"
 
-          # Get the last run timestamp from an environment variable
-          LAST_RUN_TIMESTAMP=${{ env.LAST_RUN_TIMESTAMP }}
-          echo "Last run timestamp: $LAST_RUN_TIMESTAMP"
+          # Extract the numeric components of the version using regular expressions
+          major=$(echo "$CURRENT_VERSION" | sed -E 's/^([0-9]+)\..*/\1/')
+          minor=$(echo "$CURRENT_VERSION" | sed -E 's/^[0-9]+\.([0-9]+)\..*/\1/')
+          patch=$(echo "$CURRENT_VERSION" | sed -E 's/^[0-9]+\.[0-9]+\.([0-9]+).*/\1/')
 
-          # Get the current timestamp
-          CURRENT_TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
-
-          # Determine if it's a new day, new hour, or new minute
-          if [[ -z $LAST_RUN_TIMESTAMP ]] || [[ ${LAST_RUN_TIMESTAMP:0:10} != ${CURRENT_TIMESTAMP:0:10} ]]; then
-            # Increment the major version
-            NEW_VERSION=$(node -p "'${CURRENT_VERSION}'.split('-')[0].split('.').map((val, index) => index === 0 ? parseInt(val) + 1 : val).join('.') + '-0.0'")
-
-          elif [[ ${LAST_RUN_TIMESTAMP:0:13} != ${CURRENT_TIMESTAMP:0:13} ]]; then
-            # Increment the minor version
-            NEW_VERSION=$(node -p "'${CURRENT_VERSION}'.split('-')[0].split('.').map((val, index) => index === 1 ? parseInt(val) + 1 : val).join('.') + '-0'")
-
-          else
+          # Increment the version components based on the rules
+          if [ "$patch" -lt 9 ]; then
             # Increment the patch version
-            NEW_VERSION=$(node -p "'${CURRENT_VERSION}'.split('-')[0].split('.').map((val, index) => index === 2 ? parseInt(val) + 1 : val).join('.')")
-
+            NEW_VERSION="$major.$minor.$((patch + 1))"
+          elif [ "$minor" -lt 9 ]; then
+            # Increment the minor version and reset the patch version to 0
+            NEW_VERSION="$major.$((minor + 1)).0"
+          else
+            # Increment the major version and reset the minor and patch versions to 0
+            NEW_VERSION="$((major + 1)).0.0"
           fi
-
-          # Update the version in package.json
-          npm version $NEW_VERSION --allow-same-version --no-git-tag-version
 
           # Determine the current vulnerability level
           VULNERABILITY_LEVEL=$(echo $CURRENT_VERSION | grep -oE "[^-]+$")
 
           # Install the appropriate dependencies based on the vulnerability level
-          if [[ $VULNERABILITY_LEVEL == "low-vulnerability" ]]; then
+          if [[ $VULNERABILITY_LEVEL == "fixed" ]]; then
+            npm install timespan@2.3.0 --save-exact
+            NEW_VERSION="${NEW_VERSION}-low-vulnerability"
+
+          elif [[ $VULNERABILITY_LEVEL == "low-vulnerability" ]]; then
             npm install swagger-ui-dist@4.1.2 --save-exact
             NEW_VERSION="${NEW_VERSION}-moderate-vulnerability"
 
@@ -73,34 +69,14 @@ jobs:
             NEW_VERSION="${NEW_VERSION}-critical-vulnerability"
 
           elif [[ $VULNERABILITY_LEVEL == "critical-vulnerability" ]]; then
-            npm deprecate . "This version is deprecated"
             NEW_VERSION="${NEW_VERSION}-deprecated"
 
-          elif [[ $VULNERABILITY_LEVEL == "deprecated" ]]; then
+          else
             NEW_VERSION="${NEW_VERSION}-fixed"
-
-          elif [[ $VULNERABILITY_LEVEL == "fixed" ]]; then
-            npm install timespan@2.3.0 --save-exact
-            NEW_VERSION="${NEW_VERSION}-low-vulnerability"
-
           fi
 
-          # Set the current timestamp to the environment variable
-          echo "LAST_RUN_TIMESTAMP=$CURRENT_TIMESTAMP" >> $GITHUB_ENV
-
-          # Set the new version to the environment variable
-          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
-
-          # Print the updated version
-          echo $NEW_VERSION
-
-        env:
-          NODE_OPTIONS: '--max-old-space-size=4096'
-
-      - name: Publish new version
-        run: |
-          # Get the updated version from the previous step
-          NEW_VERSION=${{ env.NEW_VERSION }}
+          # Update the version in package.json
+          npm version $NEW_VERSION --allow-same-version --no-git-tag-version
 
           # Authenticate with npm
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
@@ -112,3 +88,6 @@ jobs:
           if [[ $NEW_VERSION == *"-deprecated" ]]; then
             npm deprecate . "This version is deprecated"
           fi
+
+        env:
+          NODE_OPTIONS: "--max-old-space-size=4096"

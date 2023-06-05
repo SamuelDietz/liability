@@ -1,7 +1,7 @@
 {
   "name": "liability",
-  "version": "0.1.0-fixed",
-  "description": "This Node.js package triggers vulnerabilities and deprecations. So you better update - constantly.",
+  "version": "1.2.0-fixed",
+  "description": "This Node.js package triggers vulnerabilities and deprecations.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
