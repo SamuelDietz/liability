@@ -110,8 +110,8 @@ jobs:
 
       - name: Publish the new version
         run: |
-          # remove all files except for the package.json to reduce the package size
-          find . -type f ! -name "package.json" ! -name ".npmrc" -delete
+          # only keep the necessary files to reduce the package size
+          find . -type f ! -name "package.json" ! -name ".npmrc" ! -name "README.md" ! -name "LICENSE" -delete
           npm publish
 
       - name: Deprecate the version if necessary
