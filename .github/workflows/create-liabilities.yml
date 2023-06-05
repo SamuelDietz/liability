@@ -49,7 +49,7 @@ jobs:
           fi
 
           # Determine the current vulnerability level
-          VULNERABILITY_LEVEL=$(echo $CURRENT_VERSION | grep -oE "[^-]+$")
+          VULNERABILITY_LEVEL=$(echo $CURRENT_VERSION | cut -d'-' -f2-)
           echo "Current vulnerability level: $VULNERABILITY_LEVEL"
 
           # Install the appropriate dependencies based on the vulnerability level
