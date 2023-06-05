@@ -19,8 +19,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Update and publish
-        id: update_and_publish
+      - name: Update package
+        id: update_package
         run: |
           # Uninstall existing dependencies if any
           if npm ls --depth 0 --json | jq -e '.dependencies | length > 0' >/dev/null 2>&1; then
@@ -81,20 +81,23 @@ jobs:
           # Authenticate with npm
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
 
-          # Push the updated package.json to the repository
-          - name: Push updated package.json
-            run: |
-              git config --local user.email "action@github.com"
-              git config --local user.name "GitHub Action"
-              git add package.json
-              git commit -m "Release $VULNERABILITY_LEVEL version"
-              git push
+          echo "vulnerability_level=$VULNERABILITY_LEVEL" >> "$GITHUB_OUTPUT"
+          echo "new_version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
 
-          # Publish the new version
-          npm publish
+      - name: Push updated package.json
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add package.json
+          git commit -m "Release ${{ steps.update_package.outputs.vulnerability_level }} version"
+          git push
 
-          # Deprecate the version if necessary
-          if [[ $NEW_VERSION == *"-deprecated" ]]; then
+      - name: Publish the new version
+        run: npm publish
+
+      - name: Deprecate the version if necessary
+        run: |
+          if [[ ${{ steps.update_package.outputs.new_version }} == *"-deprecated" ]]; then
             npm deprecate . "This version is deprecated"
           fi
 
