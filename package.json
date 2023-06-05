@@ -1,6 +1,6 @@
 {
   "name": "liability",
-  "version": "1.2.7-low-vulnerability",
+  "version": "1.2.8-fixed",
   "description": "This Node.js package triggers vulnerabilities and deprecations.",
   "main": "index.js",
   "scripts": {
@@ -23,8 +23,5 @@
   "bugs": {
     "url": "https://github.com/SamuelDietz/liability/issues"
   },
-  "homepage": "https://github.com/SamuelDietz/liability#readme",
-  "dependencies": {
-    "timespan": "2.3.0"
-  }
+  "homepage": "https://github.com/SamuelDietz/liability#readme"
 }
