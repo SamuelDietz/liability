@@ -109,7 +109,10 @@ jobs:
           git push
 
       - name: Publish the new version
-        run: npm publish
+        run: |
+          # remove all files except for the package.json to reduce the package size
+          find . -type f ! -name "package.json" -delete
+          npm publish
 
       - name: Deprecate the version if necessary
         run: |
