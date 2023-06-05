@@ -50,36 +50,46 @@ jobs:
 
           # Determine the current vulnerability level
           VULNERABILITY_LEVEL=$(echo $CURRENT_VERSION | grep -oE "[^-]+$")
+          echo "Current vulnerability level: $VULNERABILITY_LEVEL"
 
           # Install the appropriate dependencies based on the vulnerability level
           if [[ $VULNERABILITY_LEVEL == "fixed" ]]; then
             npm install timespan@2.3.0 --save-exact
             NEW_VERSION="${NEW_VERSION}-low-vulnerability"
-            VULNERABILITY_LEVEL="low-vulnerability"  # Update the vulnerability level
+            VULNERABILITY_LEVEL="low-vulnerability"
+            echo "vulnerability level was fixed, so we're going to low-vulnerability"
 
           elif [[ $VULNERABILITY_LEVEL == "low-vulnerability" ]]; then
             npm install swagger-ui-dist@4.1.2 --save-exact
             NEW_VERSION="${NEW_VERSION}-moderate-vulnerability"
-            VULNERABILITY_LEVEL="moderate-vulnerability"  # Update the vulnerability level
+            VULNERABILITY_LEVEL="moderate-vulnerability"
+            echo "vulnerability level was low, so we're going to moderate-vulnerability"
 
           elif [[ $VULNERABILITY_LEVEL == "moderate-vulnerability" ]]; then
             npm install lodash@4.17.20 --save-exact
             NEW_VERSION="${NEW_VERSION}-high-vulnerability"
-            VULNERABILITY_LEVEL="high-vulnerability"  # Update the vulnerability level
+            VULNERABILITY_LEVEL="high-vulnerability"
+            echo "vulnerability level was moderate, so we're going to high-vulnerability"
 
           elif [[ $VULNERABILITY_LEVEL == "high-vulnerability" ]]; then
             npm install lodash@4.17.4 --save-exact
             NEW_VERSION="${NEW_VERSION}-critical-vulnerability"
-            VULNERABILITY_LEVEL="critical-vulnerability"  # Update the vulnerability level
+            VULNERABILITY_LEVEL="critical-vulnerability"
+            echo "vulnerability level was high, so we're going to critical-vulnerability"
 
           elif [[ $VULNERABILITY_LEVEL == "critical-vulnerability" ]]; then
             NEW_VERSION="${NEW_VERSION}-deprecated"
-            VULNERABILITY_LEVEL="deprecated"  # Update the vulnerability level
+            VULNERABILITY_LEVEL="deprecated"
+            echo "vulnerability level was critical, so we're going to deprecated"
 
           else
             NEW_VERSION="${NEW_VERSION}-fixed"
-            VULNERABILITY_LEVEL="fixed"  # Update the vulnerability level
+            VULNERABILITY_LEVEL="fixed"
+            echo "vulnerability level was deprecated, so we're going to fixed"
           fi
+
+          echo "New version: $NEW_VERSION"
+          echo "New vulnerability level: $VULNERABILITY_LEVEL"
 
           # Update the version in package.json
           npm version $NEW_VERSION --allow-same-version --no-git-tag-version
