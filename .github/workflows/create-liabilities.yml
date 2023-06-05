@@ -82,10 +82,16 @@ jobs:
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
 
           # Push the updated package.json to the repository
-          npx github-script@6 push -u $GITHUB_ACTOR -r $GITHUB_REPOSITORY -f package.json -m "release $VULNERABILITY_LEVEL version"
+          - name: Push updated package.json
+            run: |
+              git config --local user.email "action@github.com"
+              git config --local user.name "GitHub Action"
+              git add package.json
+              git commit -m "Release $VULNERABILITY_LEVEL version"
+              git push
 
-          # Publish the new version and create a release
-          npx github-script@6 npm-publish -u $GITHUB_ACTOR -r $GITHUB_REPOSITORY --access public
+          # Publish the new version
+          npm publish
 
           # Deprecate the version if necessary
           if [[ $NEW_VERSION == *"-deprecated" ]]; then
