@@ -81,8 +81,11 @@ jobs:
           # Authenticate with npm
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
 
-          # Publish the new version
-          npm publish
+          # Push the updated package.json to the repository
+          npx github-script@6 push -u $GITHUB_ACTOR -r $GITHUB_REPOSITORY -f package.json -m "release $VULNERABILITY_LEVEL version"
+
+          # Publish the new version and create a release
+          npx github-script@6 npm-publish -u $GITHUB_ACTOR -r $GITHUB_REPOSITORY --access public
 
           # Deprecate the version if necessary
           if [[ $NEW_VERSION == *"-deprecated" ]]; then
