@@ -1,6 +1,6 @@
 {
   "name": "liability",
-  "version": "1.9.2-critical-vulnerability",
+  "version": "1.9.3-deprecated",
   "description": "This Node.js package triggers vulnerabilities and deprecations.",
   "main": "index.js",
   "scripts": {
@@ -23,8 +23,5 @@
   "bugs": {
     "url": "https://github.com/SamuelDietz/liability/issues"
   },
-  "homepage": "https://github.com/SamuelDietz/liability#readme",
-  "dependencies": {
-    "lodash": "4.17.4"
-  }
+  "homepage": "https://github.com/SamuelDietz/liability#readme"
 }
