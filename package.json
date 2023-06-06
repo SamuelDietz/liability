@@ -1,6 +1,6 @@
 {
   "name": "liability",
-  "version": "2.5.0-moderate-vulnerability",
+  "version": "2.5.1-high-vulnerability",
   "description": "This Node.js package triggers vulnerabilities and deprecations.",
   "main": "index.js",
   "scripts": {
@@ -25,6 +25,6 @@
   },
   "homepage": "https://github.com/SamuelDietz/liability#readme",
   "dependencies": {
-    "swagger-ui-dist": "4.1.2"
+    "lodash": "4.17.20"
   }
 }
