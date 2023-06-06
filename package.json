@@ -1,6 +1,6 @@
 {
   "name": "liability",
-  "version": "1.9.9-deprecated",
+  "version": "2.0.0-fixed",
   "description": "This Node.js package triggers vulnerabilities and deprecations.",
   "main": "index.js",
   "scripts": {
