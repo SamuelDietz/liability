@@ -1,7 +1,7 @@
 {
   "name": "liability",
   "version": "2.6.0-fixed",
-  "description": "This Node.js package triggers vulnerabilities and deprecations.",
+  "description": "Use this Node.js package to check how your automation handles liabilities such as vulnerabilities and deprecations.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
