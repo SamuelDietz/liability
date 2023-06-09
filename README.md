@@ -6,7 +6,7 @@
 
 # This package is a liability
 
-It constantly triggers vulnerabilities of different severity levels by rotating installs of vulnerable packages. New versions are released every 5+ minutes.
+It constantly triggers vulnerabilities of different severity levels by rotating installs of vulnerable packages. New versions are released every 60+ minutes.
 
 if you make the mistake of executing
 
