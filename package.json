@@ -1,6 +1,6 @@
 {
   "name": "liability",
-  "version": "10.0.3-deprecated",
+  "version": "10.0.4-fixed",
   "description": "Use this Node.js package to check how your automation handles liabilities such as vulnerabilities and deprecations.",
   "main": "index.js",
   "scripts": {
