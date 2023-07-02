@@ -1,6 +1,6 @@
 {
   "name": "liability",
-  "version": "11.4.0-critical-vulnerability",
+  "version": "11.4.1-deprecated",
   "description": "Use this Node.js package to check how your automation handles liabilities such as vulnerabilities and deprecations.",
   "main": "index.js",
   "scripts": {
@@ -23,8 +23,5 @@
   "bugs": {
     "url": "https://github.com/SamuelDietz/liability/issues"
   },
-  "homepage": "https://github.com/SamuelDietz/liability#readme",
-  "dependencies": {
-    "lodash": "4.17.4"
-  }
+  "homepage": "https://github.com/SamuelDietz/liability#readme"
 }
