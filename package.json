@@ -1,6 +1,6 @@
 {
   "name": "liability",
-  "version": "13.6.4-fixed",
+  "version": "13.6.5-low-vulnerability",
   "description": "Use this Node.js package to check how your automation handles liabilities such as vulnerabilities and deprecations.",
   "main": "index.js",
   "scripts": {
@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/SamuelDietz/liability/issues"
   },
-  "homepage": "https://github.com/SamuelDietz/liability#readme"
+  "homepage": "https://github.com/SamuelDietz/liability#readme",
+  "dependencies": {
+    "timespan": "2.3.0"
+  }
 }
