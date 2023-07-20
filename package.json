@@ -1,6 +1,6 @@
 {
   "name": "liability",
-  "version": "15.5.5-deprecated",
+  "version": "15.5.6-fixed",
   "description": "Use this Node.js package to check how your automation handles liabilities such as vulnerabilities and deprecations.",
   "main": "index.js",
   "scripts": {
