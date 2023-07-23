@@ -1,6 +1,6 @@
 {
   "name": "liability",
-  "version": "16.2.3-low-vulnerability",
+  "version": "16.2.4-moderate-vulnerability",
   "description": "Use this Node.js package to check how your automation handles liabilities such as vulnerabilities and deprecations.",
   "main": "index.js",
   "scripts": {
@@ -25,6 +25,6 @@
   },
   "homepage": "https://github.com/SamuelDietz/liability#readme",
   "dependencies": {
-    "timespan": "2.3.0"
+    "swagger-ui-dist": "4.1.2"
   }
 }
