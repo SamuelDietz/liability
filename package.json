@@ -1,6 +1,6 @@
 {
   "name": "liability",
-  "version": "19.0.1-high-vulnerability",
+  "version": "19.0.2-critical-vulnerability",
   "description": "Use this Node.js package to check how your automation handles liabilities such as vulnerabilities and deprecations.",
   "main": "index.js",
   "scripts": {
@@ -25,6 +25,6 @@
   },
   "homepage": "https://github.com/SamuelDietz/liability#readme",
   "dependencies": {
-    "lodash": "4.17.20"
+    "lodash": "4.17.4"
   }
 }
